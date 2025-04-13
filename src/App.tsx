@@ -1,19 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import LoginButton from "./components/ui/login";
 import ProfileCard from "./components/profile";
 import InstagramMedia from "./components/insta-media";
 import { useInstagram } from "./context";
 
-// Extend the Window interface to include fbAsyncInit
 declare global {
   interface Window {
     fbAsyncInit: () => void;
     FB: any;
   }
 }
-
-const FB_APP_ID = process.env.REACT_APP_FB_APP_ID;
-const REDIRECT_URI = "http://localhost:3000"; // Update to your domain
 
 interface UserInfo {
   id: string;
@@ -26,7 +22,6 @@ interface UserInfo {
 export default function InstagramGraphApp() {
   const [userInfo, setUserInfo] = useState<UserInfo>({} as UserInfo);
   const [comments, setComments] = useState<any>({});
-  const [replies, setReplies] = useState({});
 
   const { setAccessToken, setUserInstaId, accessToken } = useInstagram();
 
@@ -80,34 +75,6 @@ export default function InstagramGraphApp() {
       });
     } catch (err) {
       console.error("Error fetching IG media", err);
-    }
-  };
-
-  const fetchComments = async (mediaId: any) => {
-    try {
-      const res = await fetch(
-        `https://graph.facebook.com/v19.0/${mediaId}/comments?access_token=${accessToken}`
-      );
-      const data = await res.json();
-      setComments((prev: any) => ({ ...prev, [mediaId]: data.data }));
-    } catch (err) {
-      console.error("Error fetching comments", err);
-    }
-  };
-
-  const replyToComment = async (commentId: any, replyText: any) => {
-    try {
-      await fetch(
-        `https://graph.facebook.com/v19.0/${commentId}/replies?access_token=${accessToken}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: replyText }),
-        }
-      );
-      alert("Reply sent successfully!");
-    } catch (err) {
-      console.error("Error replying to comment", err);
     }
   };
 

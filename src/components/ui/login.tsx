@@ -28,16 +28,6 @@ export default function LoginButton({ setAccessToken, fetchIGBusinessAccount, ac
                 if (response.authResponse) {
                     setAccessToken(response.authResponse.accessToken);
                     fetchIGBusinessAccount(response.authResponse.accessToken);
-                    // const pagesRes = getFacebookPages(response.authResponse.accessToken);
-
-                    localStorage.setItem(
-                        "fb_access_token",
-                        response.authResponse.accessToken
-                    );
-                    localStorage.setItem(
-                        "fb_user_id",
-                        response.authResponse.userID
-                    );
                 }
             },
             {
@@ -51,7 +41,7 @@ export default function LoginButton({ setAccessToken, fetchIGBusinessAccount, ac
             onClick={loginWithFacebook}
             className="bg-blue-600 text-white px-4 py-2 rounded shadow"
         >
-            Login with Instagram (via Facebook)
+            Login with Instagram
         </button>
     )
 }
